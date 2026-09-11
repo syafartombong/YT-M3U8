@@ -1,0 +1,4 @@
+# Format: Nama|tvg-id|URL YouTube (pakai /live di akhir channel URL)
+# Baris yang diawali # diabaikan. Tambahkan channel lain di baris baru.
+Kompas TV|KompasTV.id|https://www.youtube.com/channel/UC5BMIWZe9isJXLZZWPWvBlg/live
+CNN Indonesia|CNNIndonesia.id|https://www.youtube.com/channel/UCKII0Ml9S5wneKbHswmUrIQ/live
