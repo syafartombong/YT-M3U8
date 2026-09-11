@@ -29,6 +29,12 @@ jobs:
         with:
           deno-version: v2.x
 
+      - name: Write YouTube cookies
+        run: |
+          cat > cookies.txt <<'EOF'
+          ${{ secrets.YT_COOKIES }}
+          EOF
+
       - name: Generate playlist
         run: python generate_m3u.py
 
