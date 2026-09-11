@@ -36,8 +36,10 @@ def resolve_stream_url(youtube_url: str) -> Optional[str]:
         lines = [line.strip() for line in result.stdout.splitlines() if line.strip()]
         return lines[-1] if lines else None
     except subprocess.CalledProcessError as e:
-        stderr_tail = (e.stderr or "").strip().splitlines()[-1:] or ["(tanpa detail)"]
-        print(f"  [!] Gagal resolve {youtube_url}: {stderr_tail[0]}", file=sys.stderr)
+        stderr = (e.stderr or "").strip() or "(tanpa detail)"
+        print(f"  [!] Gagal resolve {youtube_url}:", file=sys.stderr)
+        for line in stderr.splitlines():
+            print(f"      {line}", file=sys.stderr)
         return None
     except subprocess.TimeoutExpired:
         print(f"  [!] Timeout resolve {youtube_url}", file=sys.stderr)
