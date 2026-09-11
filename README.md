@@ -1,4 +1,4 @@
-# YT-M3U8
+# youtube-to-m3u8
 
 Generator playlist M3U pribadi dari channel YouTube Live publik (mis. siaran
 berita free-to-air), pakai `yt-dlp` + GitHub Actions untuk auto-refresh.
@@ -84,3 +84,37 @@ mengambil URL HLS yang masih segar tiap kali me-refresh playlist.
 Tambahkan baris baru di `channels.txt` dengan format yang sama. Pastikan
 URL yang dipakai adalah channel YouTube publik (pakai akhiran `/live`),
 bukan video privat/unlisted atau siaran berbayar.
+
+## Kalau muncul error "Sign in to confirm you're not a bot"
+
+YouTube kadang menandai IP milik GitHub Actions (atau cloud provider lain)
+sebagai mencurigakan dan meminta autentikasi sebelum memberi URL stream.
+Ini bukan bug di script — perlu ditambahkan cookies dari akun YouTube yang
+sudah login.
+
+**Sebelum mulai — soal keamanan:** sebaiknya pakai akun Google
+kedua/khusus untuk ini, bukan akun pribadi/utama kamu. Menjalankan
+ekstraksi otomatis berulang dengan cookies suatu akun (walau jarang)
+bisa membuat akun itu kena flag oleh YouTube. Kalau itu terjadi pada
+akun sekunder, dampaknya minim; kalau itu akun utama kamu, lebih
+merepotkan.
+
+1. **Login ke YouTube** di browser pakai akun yang akan dipakai.
+2. **Export cookies** pakai ekstensi browser resmi yang direkomendasikan
+   yt-dlp: [Get cookies.txt LOCALLY](https://chrome.google.com/webstore/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)
+   untuk Chrome, atau [cookies.txt](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/)
+   untuk Firefox. Buka youtube.com saat masih login, lalu export cookies
+   untuk domain tersebut ke file `cookies.txt` (format Netscape — baris
+   pertama harus `# HTTP Cookie File` atau `# Netscape HTTP Cookie File`).
+3. **Simpan sebagai GitHub Secret**, jangan pernah commit file ini ke
+   repo:
+   - Buka repo → **Settings → Secrets and variables → Actions → New
+     repository secret**
+   - Nama: `YT_COOKIES`
+   - Value: tempel seluruh isi file `cookies.txt`
+4. Push perubahan `generate_m3u.py` dan `update-playlist.yml` yang sudah
+   mendukung cookies (lihat repo ini), lalu jalankan ulang workflow.
+5. Cookies session bisa kedaluwarsa setelah beberapa minggu/bulan. Kalau
+   suatu saat workflow gagal lagi dengan pesan yang sama, cukup ulangi
+   langkah 1–3 untuk memperbarui secret `YT_COOKIES`.
+

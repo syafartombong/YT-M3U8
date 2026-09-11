@@ -20,14 +20,20 @@ from typing import Optional
 
 CHANNELS_FILE = Path("channels.txt")
 OUTPUT_FILE = Path("playlist.m3u")
+COOKIES_FILE = Path("cookies.txt")
 YT_DLP_TIMEOUT_SECONDS = 30
 
 
 def resolve_stream_url(youtube_url: str) -> Optional[str]:
     """Pakai yt-dlp untuk resolve URL YouTube Live ke URL HLS (.m3u8) langsung."""
+    cmd = ["yt-dlp", "-g", "-f", "best"]
+    if COOKIES_FILE.exists():
+        cmd += ["--cookies", str(COOKIES_FILE)]
+    cmd.append(youtube_url)
+
     try:
         result = subprocess.run(
-            ["yt-dlp", "-g", "-f", "best", youtube_url],
+            cmd,
             capture_output=True,
             text=True,
             timeout=YT_DLP_TIMEOUT_SECONDS,
