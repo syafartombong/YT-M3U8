@@ -26,7 +26,7 @@ YT_DLP_TIMEOUT_SECONDS = 30
 REQUEST_DELAY_SECONDS = 5  # jeda antar-channel, supaya tidak terlihat seperti bot
 MAX_RETRIES = 2
 RETRY_DELAY_SECONDS = 10  # jeda sebelum mencoba ulang channel yang gagal
-MAX_HEIGHT = 720  # batas resolusi; naikkan/turunkan sesuai kebutuhan (mis. 480, 1080)
+MAX_HEIGHT = 480  # batas resolusi; naikkan/turunkan sesuai kebutuhan (mis. 480, 1080)
 
 
 def resolve_stream_url(youtube_url: str) -> Optional[str]:
