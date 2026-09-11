@@ -85,6 +85,14 @@ Tambahkan baris baru di `channels.txt` dengan format yang sama. Pastikan
 URL yang dipakai adalah channel YouTube publik (pakai akhiran `/live`),
 bukan video privat/unlisted atau siaran berbayar.
 
+## Mengatur resolusi (kalau video lag)
+
+Secara default playlist dibatasi maksimum 720p (diatur lewat konstanta
+`MAX_HEIGHT` di `generate_m3u.py`) supaya lebih ringan untuk perangkat
+seperti Android TV/TiviMate. Kalau masih lag, turunkan lagi nilainya
+(mis. `480`); kalau koneksi kuat dan mau kualitas lebih tinggi, naikkan
+(mis. `1080`).
+
 ## Kalau muncul error "Sign in to confirm you're not a bot"
 
 YouTube kadang menandai IP milik GitHub Actions (atau cloud provider lain)
@@ -100,12 +108,24 @@ akun sekunder, dampaknya minim; kalau itu akun utama kamu, lebih
 merepotkan.
 
 1. **Login ke YouTube** di browser pakai akun yang akan dipakai.
-2. **Export cookies** pakai ekstensi browser resmi yang direkomendasikan
-   yt-dlp: [Get cookies.txt LOCALLY](https://chrome.google.com/webstore/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)
-   untuk Chrome, atau [cookies.txt](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/)
-   untuk Firefox. Buka youtube.com saat masih login, lalu export cookies
-   untuk domain tersebut ke file `cookies.txt` (format Netscape — baris
-   pertama harus `# HTTP Cookie File` atau `# Netscape HTTP Cookie File`).
+2. **Export cookies dari jendela Incognito/Private, lalu jangan dipakai lagi.** Ini
+   bagian paling penting: Google merotasi cookie sesi sebagai fitur keamanan
+   begitu sesi login itu dipakai browsing secara aktif — begitu dirotasi,
+   file `cookies.txt` yang sudah di-export sebelumnya langsung tidak valid,
+   walau baru berumur beberapa jam. Supaya cookies tetap valid lebih lama:
+   - Buka ekstensi cookies-exporter, di halaman pengaturan ekstensi (chrome://extensions)
+     aktifkan **"Allow in Incognito"**.
+   - Buka jendela **Incognito/Private baru**, login ke akun YouTube tersebut
+     (atau pakai sesi yang sudah login lewat cookie import), buka
+     youtube.com, lalu export cookies dari situ.
+   - Setelah selesai export, **tutup jendela incognito itu dan jangan buka
+     sesi itu lagi** (baik di incognito maupun tab normal). Begitu sesi itu
+     dipakai lagi untuk browsing, cookies akan dirotasi lagi dan kamu harus
+     export ulang.
+   - Ekstensi yang direkomendasikan yt-dlp: [Get cookies.txt LOCALLY](https://chrome.google.com/webstore/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)
+     untuk Chrome, atau [cookies.txt](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/)
+     untuk Firefox. Format hasil export harus Netscape — baris pertama
+     `# HTTP Cookie File` atau `# Netscape HTTP Cookie File`.
 3. **Simpan sebagai GitHub Secret**, jangan pernah commit file ini ke
    repo:
    - Buka repo → **Settings → Secrets and variables → Actions → New
@@ -114,7 +134,20 @@ merepotkan.
    - Value: tempel seluruh isi file `cookies.txt`
 4. Push perubahan `generate_m3u.py` dan `update-playlist.yml` yang sudah
    mendukung cookies (lihat repo ini), lalu jalankan ulang workflow.
-5. Cookies session bisa kedaluwarsa setelah beberapa minggu/bulan. Kalau
-   suatu saat workflow gagal lagi dengan pesan yang sama, cukup ulangi
-   langkah 1–3 untuk memperbarui secret `YT_COOKIES`.
+5. Cookies session bisa kedaluwarsa setelah beberapa minggu/bulan (atau
+   lebih cepat kalau sesi itu tidak sengaja dipakai browsing lagi — lihat
+   catatan di atas). Kalau suatu saat workflow gagal lagi dengan pesan
+   yang sama, cukup ulangi langkah 1–3 untuk memperbarui secret
+   `YT_COOKIES`.
+
+### Alternatif jangka panjang: PO Token provider
+
+Kalau proses refresh cookies manual ini kerasa merepotkan, ada opsi yang
+lebih tahan lama: pasang **PO Token provider** (mis. plugin
+`bgutil-ytdlp-pot-provider`). Ini menjalankan layanan kecil yang membuat
+token otorisasi otomatis untuk tiap request, tanpa bergantung pada cookies
+akun yang bisa dirotasi kapan saja. Setupnya lebih rumit di awal (perlu
+menjalankan companion service terpisah di runner), tapi setelah terpasang
+biasanya jauh lebih jarang perlu campur tangan manual. Kalau tertarik,
+ini bisa jadi langkah berikutnya.
 
