@@ -24,6 +24,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Setup Deno (dibutuhkan yt-dlp untuk extract YouTube)
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
       - name: Generate playlist
         run: python generate_m3u.py
 
