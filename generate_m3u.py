@@ -26,7 +26,7 @@ YT_DLP_TIMEOUT_SECONDS = 30
 REQUEST_DELAY_SECONDS = 5  # jeda antar-channel, supaya tidak terlihat seperti bot
 MAX_RETRIES = 2
 RETRY_DELAY_SECONDS = 10  # jeda sebelum mencoba ulang channel yang gagal
-MAX_HEIGHT = 480  # batas resolusi; naikkan/turunkan sesuai kebutuhan (mis. 480, 1080)
+MAX_HEIGHT = 720  # batas resolusi; naikkan/turunkan sesuai kebutuhan (mis. 480, 1080)
 
 
 def resolve_stream_url(youtube_url: str) -> Optional[str]:
@@ -57,12 +57,12 @@ def resolve_stream_url(youtube_url: str) -> Optional[str]:
         return None
 
 
-def load_channels() -> list[tuple[str, str, str]]:
+def load_channels() -> list[tuple[str, str, str, str]]:
     if not CHANNELS_FILE.exists():
         print(f"File {CHANNELS_FILE} tidak ditemukan.", file=sys.stderr)
         sys.exit(1)
 
-    channels: list[tuple[str, str, str]] = []
+    channels: list[tuple[str, str, str, str]] = []
     for lineno, raw_line in enumerate(
         CHANNELS_FILE.read_text(encoding="utf-8").splitlines(), start=1
     ):
@@ -70,14 +70,14 @@ def load_channels() -> list[tuple[str, str, str]]:
         if not line or line.startswith("#"):
             continue
         parts = [p.strip() for p in line.split("|")]
-        if len(parts) != 3:
+        if len(parts) != 4:
             print(
-                f"  [!] Baris {lineno} tidak valid (harus Nama|tvg-id|URL): {line}",
+                f"  [!] Baris {lineno} tidak valid (harus Nama|tvg-id|Grup|URL): {line}",
                 file=sys.stderr,
             )
             continue
-        name, tvg_id, url = parts
-        channels.append((name, tvg_id, url))
+        name, tvg_id, group, url = parts
+        channels.append((name, tvg_id, group, url))
     return channels
 
 
@@ -105,14 +105,14 @@ def main() -> None:
     entries: list[str] = []
 
     print(f"Memproses {len(channels)} channel...")
-    for i, (name, tvg_id, url) in enumerate(channels):
+    for i, (name, tvg_id, group, url) in enumerate(channels):
         if i > 0:
             time.sleep(REQUEST_DELAY_SECONDS)
         print(f"- {name} ({url})")
         stream_url = resolve_with_retry(url)
         if stream_url:
             entries.append(
-                f'#EXTINF:-1 tvg-id="{tvg_id}" group-title="Indonesia",{name}\n{stream_url}'
+                f'#EXTINF:-1 tvg-id="{tvg_id}" group-title="{group}",{name}\n{stream_url}'
             )
             print("  [ok] berhasil")
         else:

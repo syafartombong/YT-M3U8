@@ -10,10 +10,14 @@ penyedia layanan tersebut.
 
 ## Cara kerja
 
-1. `channels.txt` berisi daftar channel YouTube (format `Nama|tvg-id|URL`).
+1. `channels.txt` berisi daftar channel YouTube (format
+   `Nama|tvg-id|Grup|URL`).
 2. `generate_m3u.py` memanggil `yt-dlp -g` untuk tiap channel, mengambil URL
    HLS (`.m3u8`) langsung dari siaran live yang sedang berjalan.
-3. Hasilnya ditulis ke `playlist.m3u` dalam format M3U standar.
+3. Hasilnya ditulis ke `playlist.m3u` dalam format M3U standar, dengan
+   `group-title` sesuai kolom Grup masing-masing channel — jadi aplikasi
+   IPTV seperti TiviMate akan otomatis mengelompokkan channel ke dalam
+   kategori tersebut (mis. "Berita", "Hiburan", "Religi").
 4. GitHub Actions (`update-playlist.yml`) menjalankan langkah 2–3 setiap
    4 jam dan meng-commit ulang `playlist.m3u` jika berubah — karena URL
    HLS dari YouTube kedaluwarsa setelah beberapa jam.
@@ -35,8 +39,12 @@ Edit `channels.txt`, tambah/hapus baris sesuai channel YouTube Live yang
 mau kamu masukkan. Format:
 
 ```
-Nama Channel|tvg-id|https://www.youtube.com/channel/<CHANNEL_ID>/live
+Nama Channel|tvg-id|Grup|https://www.youtube.com/channel/<CHANNEL_ID>/live
 ```
+
+Kolom **Grup** bebas — ini yang menentukan kategori channel muncul di
+aplikasi IPTV (mis. `Berita`, `Hiburan`, `Religi`, `Olahraga`). Channel
+dengan nilai Grup yang sama akan dikelompokkan bersama.
 
 ### 4. Tes lokal (opsional tapi disarankan)
 
@@ -81,9 +89,10 @@ mengambil URL HLS yang masih segar tiap kali me-refresh playlist.
 
 ## Menambah channel lain
 
-Tambahkan baris baru di `channels.txt` dengan format yang sama. Pastikan
-URL yang dipakai adalah channel YouTube publik (pakai akhiran `/live`),
-bukan video privat/unlisted atau siaran berbayar.
+Tambahkan baris baru di `channels.txt` dengan format yang sama
+(`Nama|tvg-id|Grup|URL`). Pastikan URL yang dipakai adalah channel
+YouTube publik (pakai akhiran `/live`), bukan video privat/unlisted
+atau siaran berbayar.
 
 ## Mengatur resolusi (kalau video lag)
 
