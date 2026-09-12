@@ -5,3 +5,4 @@ CNN Indonesia|CNNIndonesia.id|Berita|https://www.youtube.com/channel/UCKII0Ml9S5
 Metro TV|MetroTV.id|Berita|https://www.youtube.com/channel/UCzl0OrB3-ehunyotIQvK77A/live
 TV One|TVOne.id|Berita|https://www.youtube.com/channel/UCER4rvDnRBPr_ncYW4UCZjg/live
 iNews|iNews.id|Berita|https://www.youtube.com/channel/UCoSkllfpgmFHtbVK835QaQg/live
+Berita Satu|BeritaSatu.id|Berita|https://www.youtube.com/channel/UCqLsfkQSM0yfyGvONAGWd3Q/live
