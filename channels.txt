@@ -1,7 +1,7 @@
 # Format: Nama|tvg-id|Grup|URL YouTube (pakai /live di akhir channel URL)
 # Baris yang diawali # diabaikan. Grup bebas (mis. Berita, Hiburan, Religi, Olahraga).
-Kompas TV|KompasTV.id|Berita|https://www.youtube.com/@KompasTV/live
-CNN Indonesia|CNNIndonesia.id|Berita|https://www.youtube.com/@CNNIDOFFICIAL/live
-Metro TV|MetroTV.id|Berita|https://www.youtube.com/@metrotvnews/live
-TV One|TVOne.id|Berita|https://www.youtube.com/@tvOneNews/live
-iNews|iNews.id|Berita|https://www.youtube.com/@OfficialiNews/live
+Kompas TV|KompasTV.id|Berita|https://www.youtube.com/channel/UC5BMIWZe9isJXLZZWPWvBlg/live
+CNN Indonesia|CNNIndonesia.id|Berita|https://www.youtube.com/channel/UCKII0Ml9S5wneKbHswmUrIQ/live
+Metro TV|MetroTV.id|Berita|https://www.youtube.com/channel/UCzl0OrB3-ehunyotIQvK77A/live
+TV One|TVOne.id|Berita|https://www.youtube.com/channel/UCER4rvDnRBPr_ncYW4UCZjg/live
+iNews|iNews.id|Berita|https://www.youtube.com/channel/UCoSkllfpgmFHtbVK835QaQg/live
